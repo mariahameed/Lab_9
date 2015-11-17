@@ -71,15 +71,29 @@ function myFunction(arr) {
 		out += 'Temperature '+  arr.query.results.channel.item.condition.temp+'<br>';
 		out += ' --- '+  arr.query.results.channel.item.condition.text+'---<br></div>';
 
+		localStorage.setItem("Date", arr.query.results.channel.item.condition.date);
+		localStorage.setItem("Temperature", arr.query.results.channel.item.condition.temp);
+		localStorage.setItem("Weather", arr.query.results.channel.item.condition.text);
+		
 		
 		out += '<div id="xxxx">   <div id="wind_DIV">    <h5>Wind: </h5> Chill:'+ arr.query.results.channel.wind.chill+'<br>';
 		out += 'Direction: '+ arr.query.results.channel.wind.direction+'<br>';
 		out += 'Speed: '+ arr.query.results.channel.wind.speed+'<br></div>';
 		
-		out += '<div id="wind_DIV1">   <h5>Atmosphere: </h5> Chill:'+ arr.query.results.channel.atmosphere.humidity+'<br>';
+		localStorage.setItem("Chill", arr.query.results.channel.wind.chill);
+		localStorage.setItem("Direction", arr.query.results.channel.wind.direction);
+		localStorage.setItem("Speed", arr.query.results.channel.wind.speed);
+		
+		out += '<div id="wind_DIV1">   <h5>Atmosphere: </h5> Humidity:'+ arr.query.results.channel.atmosphere.humidity+'<br>';
 		out += 'Pressure:'+ arr.query.results.channel.atmosphere.pressure+'<br>';
 		out += 'Rising:'+ arr.query.results.channel.atmosphere.rising+'<br>';
 		out += 'Visibility:'+ arr.query.results.channel.atmosphere.visibility+'<br></div></div>';
+		
+		localStorage.setItem("Humidity", arr.query.results.channel.atmosphere.humidity);
+		localStorage.setItem("Pressure", arr.query.results.channel.atmosphere.pressure);
+		localStorage.setItem("Rising", arr.query.results.channel.atmosphere.rising);
+		localStorage.setItem("Visibility", arr.query.results.channel.atmosphere.visibility);
+		
 		
 		var temps = arr.query.results.channel.item.forecast;
 		
@@ -93,6 +107,13 @@ function myFunction(arr) {
 			out += '<td> '+ temps[i].high+"</td>";
 			out += '<td> '+ temps[i].low+"</td>";
 			out += '<td> '+ temps[i].text+'</td></tr>';	
+			
+			localStorage.setItem("Date"+i, temps[i].date);
+			localStorage.setItem("Day"+i, temps[i].day);
+			localStorage.setItem("High"+i, temps[i].high);
+			localStorage.setItem("Low"+i, temps[i].low);
+			localStorage.setItem("Text"+, temps[i].text);
+
 		}
 		
 		out+="</table></div>"
