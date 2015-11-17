@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="id01"></div>
+<style>
+	table{
+		border:1px solid #000;
+	}
+	td{
+		border:1px solid #555;
+		padding:10px;
+	}
+
+	#location_DIV{
+		text-align:center;
+		background:rgb(19,19,21);
+		color:#eee;
+		padding:10px;
+		float:left;
+	}
+
+	#wind_DIV,#wind_DIV1{
+		margin:5%;
+		width:30%;
+		border:2px solid #222;
+		padding:20px;
+		float:left;
+
+	}
+	
+	#today_div{
+		background:#444;
+		color:#fff;
+		text-align:center;
+		padding:10px;
+	}
+	
+	#forecast_DIV{
+		float:center;
+		background:#eee;
+		
+	}
+	#xxxx{
+	}
+	
+</style>
+<script>
+var xmlhttp = new XMLHttpRequest();
+var url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22islamabad%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
+
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        var myArr = JSON.parse(xmlhttp.responseText);
+        myFunction(myArr);
+    }
+};
+
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+
+function myFunction(arr) {
+    var out = "";
+    var i;
+		
+        out += '<div id="location_DIV"><h4 class="header_text" style="text-decoration:underline">Location: </h4>  <p class="header_text">City: &nbsp'+ arr.query.results.channel.location.city+'</p>';
+		out += '<p class="header_text">Country: '+ arr.query.results.channel.location.country+'</p><hr/><br></div>';
+
+		out += '<div id="today_div"><h5>Today: </h5>';
+		out += 'Date'+ arr.query.results.channel.item.condition.date+'<br>';
+		out += 'Temperature '+  arr.query.results.channel.item.condition.temp+'<br>';
+		out += ' --- '+  arr.query.results.channel.item.condition.text+'---<br></div>';
+
+		
+		out += '<div id="xxxx">   <div id="wind_DIV">    <h5>Wind: </h5> Chill:'+ arr.query.results.channel.wind.chill+'<br>';
+		out += 'Direction: '+ arr.query.results.channel.wind.direction+'<br>';
+		out += 'Speed: '+ arr.query.results.channel.wind.speed+'<br></div>';
+		
+		out += '<div id="wind_DIV1">   <h5>Atmosphere: </h5> Chill:'+ arr.query.results.channel.atmosphere.humidity+'<br>';
+		out += 'Pressure:'+ arr.query.results.channel.atmosphere.pressure+'<br>';
+		out += 'Rising:'+ arr.query.results.channel.atmosphere.rising+'<br>';
+		out += 'Visibility:'+ arr.query.results.channel.atmosphere.visibility+'<br></div></div>';
+		
+		var temps = arr.query.results.channel.item.forecast;
+		
+		
+		out+="<div id='forecast_DIV'> <h3> Forecast </h3>  <table><tr> <td>Date</td>  <td>Day</td>  <td>High</td>  <td>Low</td>  <td>Date</td> </tr>"
+		
+		for(i=0 ; i<5 ; i++)
+		{
+			out += '<tr> <td>'+ temps[i].date+"</td>";
+			out += '<td> '+ temps[i].day+"</td>";
+			out += '<td> '+ temps[i].high+"</td>";
+			out += '<td> '+ temps[i].low+"</td>";
+			out += '<td> '+ temps[i].text+'</td></tr>';	
+		}
+		
+		out+="</table></div>"
+		document.getElementById("id01").innerHTML = out;
+}
+</script>
+
+</body>
+</html>
